@@ -73,19 +73,19 @@ const getJobDetailsById = async (req, res, next) => {
 const getAllJobDetails = async (req, res, next) => {
   try {
     const title = req.query.title || "";
-    const skills = req.query.skills;
-    let skillsChangeToArray;
-    if (skills) {
-      skillsChangeToArray = skills.split(",");
+    const skills = req.query.skills ? req.query.skills.split(",") : [];
+    const query = { title: { $regex: title, $options: "i" } };
+    if (skills.length > 0) {
+      query.skills =  { $regex: new RegExp(skills.join("|"), "i") };
     }
 
-    const jobDetails = await jobs.find(
-      {
-        title: { $regex: title, $options: "i" },
-        skills: { $in: skillsChangeToArray,$regex: skills,$options: "i" },
-      },
-      { title: 1, salary: 1, logoUrl: 1, location: 1, skills: 1 }
-    );
+    const jobDetails = await jobs.find(query, {
+      title: 1,
+      salary: 1,
+      logoUrl: 1,
+      location: 1,
+      skills: 1,
+    });
     res.status(200).json({ data: jobDetails });
   } catch (error) {
     next(error);
