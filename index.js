@@ -4,6 +4,8 @@ const auth = require('./routes/auth')
 const job = require("./routes/job");
 const errorHander = require("./middleware/errorHandler");
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
+
 
 
 const app = express();
@@ -11,6 +13,7 @@ require("dotenv").config();
 
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || 3000;
+app.use(cors())
 
 app.use(express.json())
 app.use(cookieParser())
