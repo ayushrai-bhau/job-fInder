@@ -31,8 +31,8 @@ app.use("/api/v1/auth",auth)
 app.use("/api/v1/job",job)
 
 
-app.use("/*",(req,res)=>{
-  res.status(404).json({errorMessage:"Route not Found"})
+app.use("/",(req,res)=>{
+  res.status(200).json({"status":"success running"})
 })
 app.use(errorHander)
 
